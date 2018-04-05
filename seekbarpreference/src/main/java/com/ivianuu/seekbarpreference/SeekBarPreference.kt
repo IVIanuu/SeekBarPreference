@@ -28,6 +28,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import kotlinx.android.synthetic.main.view_seekbar_preference.view.*
 import java.util.*
+import kotlin.math.min
 
 class SeekBarPreference @JvmOverloads constructor(
     context: Context,
@@ -128,6 +129,12 @@ class SeekBarPreference @JvmOverloads constructor(
     private fun valueChanged(view: View,
                              newValue: Int) {
         internalValue = (Math.round((newValue / incValue).toDouble()) * incValue).toInt()
+
+        if (internalValue < minValue) {
+            internalValue = minValue
+        } else if (internalValue > maxValue) {
+            internalValue = maxValue
+        }
 
         val format = format
 
