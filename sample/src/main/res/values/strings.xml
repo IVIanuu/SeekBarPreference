@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SeekBarPreferenceSample</string>
+
+    <string name="format_percentage">%d%%</string>
+</resources>
