@@ -80,12 +80,6 @@ class SeekBarPreference @JvmOverloads constructor(
                 maxValue = minValue + 1
             }
 
-            if (defaultValue < minValue) {
-                defaultValue = minValue
-            } else if (defaultValue > maxValue) {
-                defaultValue = maxValue
-            }
-
             if (incValue <= 0) {
                 incValue = 1
             }
