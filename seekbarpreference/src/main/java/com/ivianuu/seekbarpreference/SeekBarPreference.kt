@@ -20,20 +20,19 @@ import android.content.Context
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceManager
 import android.support.v7.preference.PreferenceViewHolder
+import android.support.v7.preference.SeekBarPreference
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.view_seekbar_preference.*
 import kotlinx.android.synthetic.main.view_seekbar_preference.view.*
 import java.util.*
 
 class SeekBarPreference @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet?,
-    defStyle: Int = 0
+    defStyle: Int = android.support.v7.preference.R.attr.seekBarPreferenceStyle
 ) : Preference(context, attrs, defStyle) {
 
     var defaultValue = 0
@@ -75,10 +74,6 @@ class SeekBarPreference @JvmOverloads constructor(
             incValue = a.getInt(R.styleable.SeekBarPreference_inc, 1)
 
             defaultValue = a.getInt(R.styleable.SeekBarPreference_android_defaultValue, 0)
-
-            if (minValue < 0) {
-                minValue = 0
-            }
 
             if (maxValue <= minValue) {
                 maxValue = minValue + 1
