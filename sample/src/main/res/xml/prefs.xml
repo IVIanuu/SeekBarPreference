@@ -18,6 +18,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <CheckBoxPreference
+        android:summary="Summary"
+        android:title="Title"/>
+
     <com.ivianuu.seekbarpreference.SeekBarPreference
         android:key="test"
         android:title="Test"
@@ -25,6 +29,19 @@
         app:min="0"
         app:max="100"
         app:inc="5"
+        app:format="@string/format_percentage"/>
+
+    <SwitchPreference
+        android:summary="Summary"
+        android:title="Title"/>
+
+    <com.ivianuu.seekbarpreference.SeekBarPreference
+        android:key="test2"
+        android:title="Test 2"
+        android:summary="Test preference 2"
+        app:min="-100"
+        app:max="400"
+        app:inc="50"
         app:format="@string/format_percentage"/>
 
 </PreferenceScreen>

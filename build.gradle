@@ -28,7 +28,7 @@ buildscript {
 
         mavenPlugin = 'com.github.dcendents:android-maven-gradle-plugin:2.0'
 
-        supportVersion = '27.1.0'
+        supportVersion = '27.1.1'
         supportAppCompat = "com.android.support:appcompat-v7:$supportVersion"
         supportPreferences = "com.android.support:preference-v7:$supportVersion"
     }

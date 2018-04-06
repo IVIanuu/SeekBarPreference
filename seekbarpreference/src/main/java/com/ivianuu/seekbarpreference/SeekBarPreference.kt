@@ -36,15 +36,13 @@ class SeekBarPreference @JvmOverloads constructor(
     defStyle: Int = android.support.v7.preference.R.attr.seekBarPreferenceStyle
 ) : Preference(context, attrs, defStyle) {
 
-    var defaultValue = 0
-    
-    var minValue = 0
+    var min = 0
         set(value) {
             field = value
             notifyChanged()
         }
 
-    var maxValue = 100
+    var max = 100
         set(value) {
             field = value
             notifyChanged()
@@ -62,6 +60,7 @@ class SeekBarPreference @JvmOverloads constructor(
             notifyChanged()
         }
 
+    private var defaultValue = 0
     private var internalValue = 0
 
     init {
@@ -70,14 +69,14 @@ class SeekBarPreference @JvmOverloads constructor(
         if (attrs != null) {
             val a = getContext().obtainStyledAttributes(attrs, R.styleable.SeekBarPreference)
 
-            minValue = a.getInt(R.styleable.SeekBarPreference_min, 0)
-            maxValue = a.getInt(R.styleable.SeekBarPreference_max, 100)
+            min = a.getInt(R.styleable.SeekBarPreference_min, 0)
+            max = a.getInt(R.styleable.SeekBarPreference_max, 100)
             incValue = a.getInt(R.styleable.SeekBarPreference_inc, 1)
 
             defaultValue = a.getInt(R.styleable.SeekBarPreference_android_defaultValue, 0)
 
-            if (maxValue <= minValue) {
-                maxValue = minValue + 1
+            if (max <= min) {
+                max = min + 1
             }
 
             if (incValue <= 0) {
@@ -96,12 +95,13 @@ class SeekBarPreference @JvmOverloads constructor(
         super.onBindViewHolder(holder)
 
         with(holder.itemView) {
-            seekbar.max = maxValue
+            seekbar.max = max - min
+            seekbar.progress = internalValue - min
 
             seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
 
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    if (fromUser) valueChanged(holder.itemView, progress)
+                    if (fromUser) progressChanged(holder.itemView)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -115,20 +115,29 @@ class SeekBarPreference @JvmOverloads constructor(
             })
 
 
-            valueChanged(this, internalValue)
+            progressChanged(this)
         }
 
     }
 
-    private fun valueChanged(view: View,
-                             newValue: Int) {
-        internalValue = (Math.round((newValue / incValue).toDouble()) * incValue).toInt()
+    private fun progressChanged(view: View) {
+        var progress = min + view.seekbar.progress
 
-        if (internalValue < minValue) {
-            internalValue = minValue
-        } else if (internalValue > maxValue) {
-            internalValue = maxValue
+        d { "progress changed $progress" }
+
+        if (progress < min) {
+            progress = min
         }
+
+        if (progress > max) {
+            progress = max
+        }
+
+        d { "checked bounds $progress" }
+
+        internalValue = (Math.round((progress / incValue).toDouble()) * incValue).toInt()
+
+        d { "stepped $internalValue" }
 
         val format = format
 
@@ -142,7 +151,7 @@ class SeekBarPreference @JvmOverloads constructor(
             internalValue.toString()
         }
 
-        view.seekbar.progress = internalValue
+        view.seekbar.progress = internalValue - min
         view.seekbar_value.text = text
     }
 

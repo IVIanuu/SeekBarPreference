@@ -44,7 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#000000"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             tools:text="This is the title"/>
@@ -54,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@android:id/title"
             android:layout_alignStart="@android:id/title"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="?android:attr/textColorSecondary"
             android:maxLines="4"
             tools:text="This is the summary"/>
@@ -95,7 +96,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentTop="true"
                 android:singleLine="true"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:ellipsize="marquee"
                 tools:text="1000%"
                 android:fadingEdge="horizontal"/>

@@ -22,24 +22,9 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-class PrefsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+class PrefsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.prefs)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onDestroyView() {
-        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
-        super.onDestroyView()
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        d { "value changed ${preferenceManager.sharedPreferences.getInt("test", 0)}" }
     }
 }
