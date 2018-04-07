@@ -20,15 +20,12 @@ import android.content.Context
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceManager
 import android.support.v7.preference.PreferenceViewHolder
-import android.support.v7.preference.SeekBarPreference
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import kotlinx.android.synthetic.main.view_seekbar_preference.view.*
 import java.util.*
-import kotlin.math.min
 
 class SeekBarPreference @JvmOverloads constructor(
     context: Context,
@@ -123,8 +120,6 @@ class SeekBarPreference @JvmOverloads constructor(
     private fun progressChanged(view: View) {
         var progress = min + view.seekbar.progress
 
-        d { "progress changed $progress" }
-
         if (progress < min) {
             progress = min
         }
@@ -133,11 +128,7 @@ class SeekBarPreference @JvmOverloads constructor(
             progress = max
         }
 
-        d { "checked bounds $progress" }
-
         internalValue = (Math.round((progress / incValue).toDouble()) * incValue).toInt()
-
-        d { "stepped $internalValue" }
 
         val format = format
 
@@ -155,8 +146,4 @@ class SeekBarPreference @JvmOverloads constructor(
         view.seekbar_value.text = text
     }
 
-}
-
-fun Any.d(message: () -> String) {
-    Log.d(this::class.java.simpleName, message())
 }
