@@ -63,12 +63,6 @@ class SeekBarPreference @JvmOverloads constructor(
             notifyChanged()
         }
 
-    var valueChangeListener: ValueChangeListener? = null
-        set(value) {
-            field = value
-            lastNotifiedValue = Int.MIN_VALUE
-        }
-
     var valueTextProvider: ValueTextProvider? = null
         set(value) {
             field = value
@@ -76,8 +70,6 @@ class SeekBarPreference @JvmOverloads constructor(
         }
 
     private var internalValue = 0
-
-    private var lastNotifiedValue = Int.MIN_VALUE
 
     init {
         layoutResource = R.layout.view_seekbar_preference
@@ -128,15 +120,17 @@ class SeekBarPreference @JvmOverloads constructor(
                 }
 
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    if (key != null) {
-                        PreferenceManager.getDefaultSharedPreferences(context).edit()
-                            .putInt(key, internalValue)
-                            .apply()
-                    }
-
-                    if (internalValue != lastNotifiedValue) {
-                        lastNotifiedValue = internalValue
-                        valueChangeListener?.onValueChanged(internalValue)
+                    if (callChangeListener(internalValue)) {
+                        val dataStore = preferenceDataStore
+                        if (dataStore != null) {
+                            dataStore.putInt(key, internalValue)
+                        } else {
+                            val editor = preferenceManager?.sharedPreferences?.edit()
+                            if (editor != null) {
+                                editor.putInt(key, internalValue)
+                                editor.apply()
+                            }
+                        }
                     }
                 }
             })
