@@ -25,7 +25,6 @@ import android.view.View
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import kotlinx.android.synthetic.main.view_seekbar_preference.view.*
-import java.util.*
 
 class SeekBarPreference @JvmOverloads constructor(
     context: Context,
@@ -51,7 +50,7 @@ class SeekBarPreference @JvmOverloads constructor(
             notifyChanged()
         }
 
-    var format: String? = null
+    var valueTextProvider: ValueTextProvider? = null
         set(value) {
             field = value
             notifyChanged()
@@ -80,7 +79,9 @@ class SeekBarPreference @JvmOverloads constructor(
                 incValue = 1
             }
 
-            format = a.getString(R.styleable.SeekBarPreference_format)
+            val format = a.getString(R.styleable.SeekBarPreference_format)
+
+
 
             a.recycle()
         }
@@ -130,14 +131,10 @@ class SeekBarPreference @JvmOverloads constructor(
 
         internalValue = (Math.round((progress / incValue).toDouble()) * incValue).toInt()
 
-        val format = format
+        val provider = valueTextProvider
 
-        val text = if (format != null) {
-            try {
-                String.format(format, internalValue)
-            } catch (e: IllegalFormatException) {
-                internalValue.toString()
-            }
+        val text = if (provider != null) {
+            provider.getText(internalValue)
         } else {
             internalValue.toString()
         }
@@ -145,5 +142,4 @@ class SeekBarPreference @JvmOverloads constructor(
         view.seekbar.progress = internalValue - min
         view.seekbar_value.text = text
     }
-
 }

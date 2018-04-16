@@ -39,9 +39,9 @@
         android:key="test2"
         android:title="Test 2"
         android:summary="Test preference 2"
-        app:min="-100"
-        app:max="400"
-        app:inc="50"
+        app:min="0"
+        app:max="100"
+        app:inc="20"
         app:format="@string/format_percentage"/>
 
 </PreferenceScreen>
