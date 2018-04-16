@@ -27,10 +27,9 @@ class PrefsFragment : PreferenceFragmentCompat() {
 
         val pref = findPreference("test2") as SeekBarPreference
 
-        pref.valueChangeListener = object : SeekBarPreference.ValueChangeListener {
-            override fun onValueChanged(value: Int) {
-                Log.d("hehe", "value changed $value")
-            }
+        pref.setOnPreferenceChangeListener { preference, newValue ->
+            Log.d("hehe", "changed $newValue")
+            true
         }
     }
 }

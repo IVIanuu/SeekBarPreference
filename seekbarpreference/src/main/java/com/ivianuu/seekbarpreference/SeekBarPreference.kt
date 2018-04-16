@@ -103,6 +103,19 @@ class SeekBarPreference @JvmOverloads constructor(
         internalValue = PreferenceManager.getDefaultSharedPreferences(context).getInt(key, defaultValue)
     }
 
+    override fun onAttachedToHierarchy(preferenceManager: PreferenceManager?) {
+        super.onAttachedToHierarchy(preferenceManager)
+
+        val dataStore = preferenceDataStore
+        internalValue = if (dataStore != null) {
+            dataStore.getInt(key, defaultValue)
+        } else if (preferenceManager != null) {
+            preferenceManager.sharedPreferences.getInt(key, defaultValue)
+        } else {
+            0
+        }
+    }
+
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
