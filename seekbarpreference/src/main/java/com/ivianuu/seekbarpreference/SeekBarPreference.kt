@@ -39,6 +39,12 @@ class SeekBarPreference @JvmOverloads constructor(
         }
         get() = internalValue
 
+    var defaultValue = 0
+        set(value) {
+            field = value
+            notifyChanged()
+        }
+
     var min = 0
         set(value) {
             field = value
@@ -57,14 +63,21 @@ class SeekBarPreference @JvmOverloads constructor(
             notifyChanged()
         }
 
+    var valueChangeListener: ValueChangeListener? = null
+        set(value) {
+            field = value
+            lastNotifiedValue = Int.MIN_VALUE
+        }
+
     var valueTextProvider: ValueTextProvider? = null
         set(value) {
             field = value
             notifyChanged()
         }
 
-    private var defaultValue = 0
     private var internalValue = 0
+
+    private var lastNotifiedValue = Int.MIN_VALUE
 
     init {
         layoutResource = R.layout.view_seekbar_preference
@@ -120,6 +133,11 @@ class SeekBarPreference @JvmOverloads constructor(
                             .putInt(key, internalValue)
                             .apply()
                     }
+
+                    if (internalValue != lastNotifiedValue) {
+                        lastNotifiedValue = internalValue
+                        valueChangeListener?.onValueChanged(internalValue)
+                    }
                 }
             })
 
@@ -152,5 +170,11 @@ class SeekBarPreference @JvmOverloads constructor(
 
         view.seekbar.progress = internalValue - min
         view.seekbar_value.text = text
+    }
+
+    interface ValueChangeListener {
+
+        fun onValueChanged(value: Int)
+
     }
 }

@@ -3,8 +3,8 @@ package com.ivianuu.seekbarpreference.sample
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.preference.PreferenceFragmentCompat
+import android.util.Log
 import com.ivianuu.seekbarpreference.SeekBarPreference
-import com.ivianuu.seekbarpreference.ValueTextProvider
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,16 +27,10 @@ class PrefsFragment : PreferenceFragmentCompat() {
 
         val pref = findPreference("test2") as SeekBarPreference
 
-        pref.valueTextProvider = object : ValueTextProvider {
-
-            override fun getText(value: Int): String {
-                return when {
-                    value < 33 -> "Super Small"
-                    value < 66 -> "Middle"
-                    else -> "Big"
-                }
+        pref.valueChangeListener = object : SeekBarPreference.ValueChangeListener {
+            override fun onValueChanged(value: Int) {
+                Log.d("hehe", "value changed $value")
             }
-
         }
     }
 }
