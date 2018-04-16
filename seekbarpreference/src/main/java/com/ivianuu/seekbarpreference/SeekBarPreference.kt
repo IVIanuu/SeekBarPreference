@@ -32,6 +32,13 @@ class SeekBarPreference @JvmOverloads constructor(
     defStyle: Int = android.support.v7.preference.R.attr.seekBarPreferenceStyle
 ) : Preference(context, attrs, defStyle) {
 
+    var currentValue: Int
+        set(value) {
+            internalValue = value
+            notifyChanged()
+        }
+        get() = internalValue
+
     var min = 0
         set(value) {
             field = value
@@ -80,7 +87,9 @@ class SeekBarPreference @JvmOverloads constructor(
             }
 
             val format = a.getString(R.styleable.SeekBarPreference_format)
-
+            if (format != null) {
+                valueTextProvider = StringFormatValueTextProvider(format)
+            }
 
 
             a.recycle()
@@ -106,9 +115,11 @@ class SeekBarPreference @JvmOverloads constructor(
                 }
 
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    PreferenceManager.getDefaultSharedPreferences(context).edit()
-                        .putInt(key, internalValue)
-                        .apply()
+                    if (key != null) {
+                        PreferenceManager.getDefaultSharedPreferences(context).edit()
+                            .putInt(key, internalValue)
+                            .apply()
+                    }
                 }
             })
 
