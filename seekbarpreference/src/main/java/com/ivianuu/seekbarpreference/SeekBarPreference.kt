@@ -29,8 +29,9 @@ import kotlinx.android.synthetic.main.view_seekbar_preference.view.*
 class SeekBarPreference @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet?,
-    defStyle: Int = android.support.v7.preference.R.attr.seekBarPreferenceStyle
-) : Preference(context, attrs, defStyle) {
+    defStyleAttr: Int = android.support.v7.preference.R.attr.seekBarPreferenceStyle,
+    defStyleRes: Int = 0
+) : Preference(context, attrs, defStyleAttr, defStyleRes) {
 
     var currentValue: Int
         set(value) {
@@ -107,13 +108,8 @@ class SeekBarPreference @JvmOverloads constructor(
         super.onAttachedToHierarchy(preferenceManager)
 
         val dataStore = preferenceDataStore
-        internalValue = if (dataStore != null) {
-            dataStore.getInt(key, defaultValue)
-        } else if (preferenceManager != null) {
-            preferenceManager.sharedPreferences.getInt(key, defaultValue)
-        } else {
-            0
-        }
+        internalValue = dataStore?.getInt(key, defaultValue) ?:
+                (preferenceManager?.sharedPreferences?.getInt(key, defaultValue) ?: 0)
     }
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {

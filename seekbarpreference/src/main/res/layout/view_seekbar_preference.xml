@@ -45,9 +45,9 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#000000"
             android:ellipsize="marquee"
             android:textSize="16sp"
+            android:textColor="?android:textColorPrimary"
             android:fadingEdge="horizontal"
             tools:text="This is the title"/>
 
