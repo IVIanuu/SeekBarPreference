@@ -150,6 +150,14 @@ class SeekBarPreference @JvmOverloads constructor(
 
     }
 
+    fun setValueTextProvider(getText: (Int) -> String): ValueTextProvider {
+        val provider = object : ValueTextProvider {
+            override fun getText(value: Int) = getText(value)
+        }
+        valueTextProvider = provider
+        return provider
+    }
+
     private fun progressChanged(view: View) {
         var progress = min + view.seekbar.progress
 
@@ -173,11 +181,5 @@ class SeekBarPreference @JvmOverloads constructor(
 
         view.seekbar.progress = internalValue - min
         view.seekbar_value.text = text
-    }
-
-    interface ValueChangeListener {
-
-        fun onValueChanged(value: Int)
-
     }
 }
